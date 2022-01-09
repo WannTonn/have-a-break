@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正在更新，请不要重启电脑...</title>
+
+  <style>
+    * {
+      cursor: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    .flashingWrapper {
+      height: 100%;
+    }
+
+    .winWrapper {
+      display: none;
+      height: 100%;
+      color: #fff;
+      background: #000;
+      font-family: 'YaHei';
+    }
+
+    .winWrapper .updateWrapper {
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .winWrapper .updateWrapper .loadingWrapper {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+
+    .winWrapper .updateWrapper .loadingWrapper .point {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      opacity: 0;
+      transform: rotate(225deg);
+      animation-iteration-count: infinite;
+      animation-name: orbit;
+      animation-duration: 5.5s;
+    }
+
+    .loadingWrapper .point:after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0 0 9px rgba(255, 255, 255, .7);
+    }
+
+    .loadingWrapper .point:nth-child(2) {
+      animation-delay: 240ms;
+    }
+
+    .loadingWrapper .point:nth-child(3) {
+      animation-delay: 480ms;
+    }
+
+    .loadingWrapper .point:nth-child(4) {
+      animation-delay: 720ms;
+    }
+
+    .loadingWrapper .point:nth-child(5) {
+      animation-delay: 960ms;
+    }
+
+    @keyframes orbit {
+      0% {
+        transform: rotate(225deg);
+        opacity: 1;
+        animation-timing-function: ease-out;
+      }
+
+      7% {
+        transform: rotate(345deg);
+        animation-timing-function: linear;
+      }
+
+      30% {
+        transform: rotate(455deg);
+        animation-timing-function: ease-in-out;
+      }
+
+      39% {
+        transform: rotate(690deg);
+        animation-timing-function: linear;
+      }
+
+      70% {
+        transform: rotate(815deg);
+        opacity: 1;
+        animation-timing-function: ease-out;
+      }
+
+      75% {
+        transform: rotate(945deg);
+        animation-timing-function: ease-out;
+      }
+
+      76% {
+        transform: rotate(945deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: rotate(945deg);
+        opacity: 0;
+      }
+    }
+
+    .winWrapper .updateWrapper .tipsWrapper {
+      margin-top: 20px;
+    }
+
+    .macWrapper {
+      display: none;
+      height: 100%;
+      color: #fff;
+      background: #000;
+    }
+
+    .macWrapper .updateWrapper {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .macWrapper .updateWrapper .logoWrapper {
+      font-size: 120px;
+    }
+
+    .macWrapper .updateWrapper .progressWrapper {
+      width: 260px;
+      height: 5px;
+      background: #222;
+      border: 1px solid #2c2c2c;
+      border-radius: 5px;
+      margin-top: 45px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .macWrapper .updateWrapper .progressWrapper .status {
+      width: 3px;
+      height: 5px;
+      margin-left: -2px;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+
+    .macWrapper .updateWrapper .textWrapper {
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flashingWrapper">
+    <div id="winWrapper" class="winWrapper">
+      <div class="updateWrapper">
+        <div>
+          <div class="loadingWrapper">
+            <div class="point"></div>
+            <div class="point"></div>
+            <div class="point"></div>
+            <div class="point"></div>
+            <div class="point"></div>
+          </div>
+          <div class="statusWrapper">
+            <div>正在进行更新<span id="winStatus">2</span>%</div>
+            <div>请保持计算机打开状态</div>
+          </div>
+        </div>
+        <div>
+          <div class="tipsWrapper">
+            计算机可能会重启几次
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="macWrapper" class="macWrapper">
+      <div class="updateWrapper">
+        <div class="logoWrapper">
+          
+        </div>
+        <div class="progressWrapper">
+          <div id="status" class="status"></div>
+        </div>
+        <div class="textWrapper">还剩大约<span id="min" class="min"></span>分钟...</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      let isMac = navigator.platform.includes('MacIntel'); // 判断是否是macOS
+      let macWrapper = document.querySelector('#macWrapper');
+      let winWrapper = document.querySelector('#winWrapper');
+      winWrapper.style.display = isMac ? 'none' : 'block';
+      macWrapper.style.display = isMac ? 'block' : 'none';
+      isMac ? isMacUpdating() : isWindowsUpdating()
+    })()
+    /** 
+    * @description 当是macOS更新时
+    */
+    function isMacUpdating() {
+      let status = document.querySelector('#status');
+      let min = document.querySelector('#min');
+      let timer;
+      let minCount = 55; // 默认先给55分钟
+      let defaultCount = 55; // 给一个进度条的用于比较的值
+      min.textContent = minCount;
+      (timer) && clearInterval(timer);
+      timer = setInterval(() => {
+        minCount = minCount - (Math.floor(Math.random() * 2) + 1);
+        min.textContent = minCount;
+        status.style.width = (260 * ((defaultCount - minCount) / defaultCount)) + 'px';
+        (minCount < 2) && (minCount = 58, defaultCount = 58); // 重置到58分钟
+      }, 1000 * 60 * 2);
+    }
+    /** 
+    * @description 当是macOS更新时
+    */
+    function isWindowsUpdating() {
+
+    }
+  </script>
+</body>
+
+</html>

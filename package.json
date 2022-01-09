@@ -1,0 +1,55 @@
+{
+  "name": "have-a-break",
+  "version": "1.0.0",
+  "description": "我只是一个小小的摸鱼APP",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build_win": "electron-packager ./ have-a-break --platform=win32 --arch=x64 --out ./release/win --electron-zip-dir=../electron-zip --icon=./src/assets/icon/icon.ico --overwrite ",
+    "build_mac": "electron-packager ./ have-a-break --platform=darwin --arch=x64 --out ./release/mac --electron-zip-dir=../electron-zip --icon=./src/assets/icon/app.icns --overwrite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WannTonn/have-a-break.git"
+  },
+  "author": "wanntonn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WannTonn/have-a-break/issues"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "electron-builder": "^22.14.5"
+  },
+  "devDependencies": {
+    "electron": "^16.0.5",
+    "electron-packager": "^15.4.0"
+  },
+  "build": {
+    "productName": "摸鱼APP",
+    "win": {
+      "icon": "assets/icon/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "type": "development",
+      "target": [
+        "mas-dev"
+      ]
+    }
+  }
+}
