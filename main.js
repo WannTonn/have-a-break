@@ -2,8 +2,9 @@ const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron
 const path = require('path');
 const isMac = process.platform === 'darwin'; // 如果是MacOS
 const isWin = process.platform === 'win32'; // 如果是Windows
+let mainWindow;
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+   mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
     webPreferences: {
@@ -18,14 +19,14 @@ function createWindow() {
 
 }
 // 配置键盘菜单快捷键,当前只支持macOS + win10  所以非mac就是win，win下关闭菜单
-  const menu = new Menu();
-  menu.append(new MenuItem({
-    submenu: [{
-      label: '退出',
-      role: 'quit',
-      accelerator: isMac ? 'Cmd+Q' : 'Alt+F4',
-    }]
-  }));
+const menu = new Menu();
+menu.append(new MenuItem({
+  submenu: [{
+    label: '退出',
+    role: 'quit',
+    accelerator: isMac ? 'Cmd+Q' : 'Alt+F4',
+  }]
+}));
 
 Menu.setApplicationMenu(isMac ? menu : null);
 
@@ -34,10 +35,27 @@ app.whenReady().then(async () => {
   createWindow();
 }).then(() => {
   // 注册退出的快捷键
-  globalShortcut.register('esc', () => {
+  globalShortcut.register('Esc', () => {
     app.quit();
   })
 })
+// 如果是Windows 只允许开一个应用
+if (isWin) {
+  const getTheLock = app.requestSingleInstanceLock();
+  if (!getTheLock) {
+    app.quit();
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore();
+
+        mainWindow.focus();
+        mainWindow.show();
+      }
+    })
+  }
+
+}
 // 当没有窗口打开时，则打开一个新窗口（MacOS）
 app.on('activate', function () {
   if (!BrowserWindow.getAllWindows().length) createWindow();
