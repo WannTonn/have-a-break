@@ -266,7 +266,6 @@
       timer = setInterval(() => {
         minsPercent = minsPercent + (Math.floor(Math.random() * 2) + 1);
         status.textContent = minsPercent;
-        console.log(minsPercent);
         (minsPercent > 99) & (minsPercent = defaultPercent); // 重置时间
       }, 1000 * 60 * 2)
     }
