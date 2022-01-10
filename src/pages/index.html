@@ -230,22 +230,31 @@
       let status = document.querySelector('#status');
       let min = document.querySelector('#min');
       let timer;
-      let minCount = 55; // 默认先给55分钟
+      let minsCount = 55; // 默认先给55分钟
       let defaultCount = 55; // 给一个进度条的用于比较的值
-      min.textContent = minCount;
+      min.textContent = minsCount;
       (timer) && clearInterval(timer);
       timer = setInterval(() => {
-        minCount = minCount - (Math.floor(Math.random() * 2) + 1);
-        min.textContent = minCount;
-        status.style.width = (260 * ((defaultCount - minCount) / defaultCount)) + 'px';
-        (minCount < 2) && (minCount = 58, defaultCount = 58); // 重置到58分钟
+        minsCount = minsCount - (Math.floor(Math.random() * 2) + 1);
+        min.textContent = minsCount;
+        status.style.width = (260 * ((defaultCount - minsCount) / defaultCount)) + 'px';
+        (minsCount < 2) && (minsCount = 58, defaultCount = 58); // 重置到58分钟
       }, 1000 * 60 * 2);
     }
     /** 
     * @description 当是macOS更新时
     */
     function isWindowsUpdating() {
-
+      let status = document.querySelector('#winStatus');
+      let minsPercent = 2; // 默认百分比
+      let defaultPercent = 2; // 
+      let timer;
+      timer && clearInterval(timer);
+      timer = clearInterval(() => {
+        minsPercent = minsPercent + (Math.floor(Math.random() * 2) + 1);
+        status.textContent = minsPercent;
+        (minsPercent > 99) & (minsPercent = defaultPercent); // 重置时间
+      }, 1000 * 60 * 2)
     }
   </script>
 </body>

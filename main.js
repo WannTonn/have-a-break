@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, nativeTheme, Menu, MenuItem, Notification } = require('electron');
+const { app, BrowserWindow, Menu, MenuItem, globalShortcut } = require('electron');
 const path = require('path');
 const isMac = process.platform === 'darwin'; // 如果是MacOS
 const isWin = process.platform === 'win32'; // 如果是Windows
@@ -8,41 +8,35 @@ function createWindow() {
     height: 800,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
       webviewTag: true,
-      enableRemoteModule: true,
-      // preload: path.join(__dirname + '/src/assets/js', 'preload.js'),
-    }
+    },
+    fullscreen: true,
+    frame: false, // 关闭顶部操作栏
   });
-  // 切换暗黑模式
-  if (isMac) {
-    ipcMain.handle('dark-mode:toggle', () => {
-      nativeTheme.themeSource = nativeTheme.shouldUseDarkColors ? 'light' : 'dark';
-      return nativeTheme.shouldUseDarkColors;
-    })
-    ipcMain.handle('dark-mode:system', () => {
-      nativeTheme.themeSource = 'system';
-    })
-  }
 
   mainWindow.loadFile('./src/pages/index.html');
 
 }
-// 配置键盘快捷键
-const menu = new Menu();
-menu.append(new MenuItem({
-  submenu: [{
-    label: '退出',
-    role: 'quit',
-    accelerator: isMac ? 'Cmd+Q' : 'Alt+F4',
-  }]
-}));
+// 配置键盘菜单快捷键,当前只支持macOS + win10  所以非mac就是win，win下关闭菜单
+  const menu = new Menu();
+  menu.append(new MenuItem({
+    submenu: [{
+      label: '退出',
+      role: 'quit',
+      accelerator: isMac ? 'Cmd+Q' : 'Alt+F4',
+    }]
+  }));
 
-Menu.setApplicationMenu(menu);
+Menu.setApplicationMenu(isMac ? menu : null);
 
 // 当electron初始化完成的时候
 app.whenReady().then(async () => {
   createWindow();
+}).then(() => {
+  // 注册退出的快捷键
+  globalShortcut.register('esc', () => {
+    app.quit();
+  })
 })
 // 当没有窗口打开时，则打开一个新窗口（MacOS）
 app.on('activate', function () {
@@ -52,3 +46,5 @@ app.on('activate', function () {
 app.on('mainWindow-all-closed', function () {
   if (isWin) app.quit();
 })
+// 当APP退出的时候取消注册快捷键
+app.on('will-quit', () => globalShortcut.unregisterAll())
