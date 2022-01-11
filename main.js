@@ -12,7 +12,7 @@ function createWindow() {
       webviewTag: true,
     },
     fullscreen: true,
-    frame: false, // 关闭顶部操作栏
+    frame: isMac, // 关闭顶部操作栏
   });
 
   mainWindow.loadFile('./src/pages/index.html');
