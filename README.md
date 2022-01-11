@@ -3,4 +3,5 @@
 
 ### 关于Have-a-break
 - 平平无奇，Windows版目前只兼容win10以上的系统。Windows更新的动画借鉴(搬运)自： [Pure CSS Windows10 Loader](https://codepen.io/feebaa/pen/PPrLQP)
-- 代码写的挫，请多指教。
+- win10下的表现如图
+- ![如图]('https://github.com/WannTonn/have-a-break/src/assets/images/win.jpg')
