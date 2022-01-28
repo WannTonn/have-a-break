@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "electron .",
     "build_win": "electron-packager ./ have-a-break --platform=win32 --arch=x64 --out ./release/win --electron-zip-dir=../electron-zip --icon=./src/assets/icon/icon.ico --overwrite ",
-    "build_mac": "electron-packager ./ have-a-break --platform=darwin --arch=x64 --out ./release/mac --electron-zip-dir=../electron-zip --icon=./src/assets/icon/app.icns --overwrite"
+    "build_mac": "electron-packager ./ have-a-break --platform=darwin --arch=x64 --out ./release/mac --electron-zip-dir=../electron-zip --icon=./src/assets/icon/app.icns --overwrite",
+    "build_mac_arm": "electron-packager ./ have-a-break --platform=darwin --arch=arm64 --out ./release/mac_arm --electron-zip-dir=../electron-zip --icon=./src/assets/icon/app.icns --overwrite"
   },
   "repository": {
     "type": "git",
