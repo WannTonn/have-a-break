@@ -9,8 +9,9 @@ win10下的表现如图
 MacOS 下的表现如图
 ![](https://github.com/WannTonn/have-a-break/blob/master/src/assets/images/mac.jpg?raw=true)
 
-
-### 项目安装与打包可以避坑的点
+### 注意
+- Windows下的exe文件实际上是一个由WinRAR压缩制作的自解压格式的压缩包，如果双击打开没反应(解压的过程是静默解压，没有进度显示)，稍微等待一下就好。
+### 项目安装与运行
 - npm install 的过程中，可能会遇到electron下载很慢的问题，解决方法如下
   - 打开[electron的国内镜像](https://npm.taobao.org/mirrors/electron/),找到你需要下载的版本(这里我用到了16.0.6，那就找到[16.0.6的windows镜像](https://npm.taobao.org/mirrors/electron/16.0.6/electron-v16.0.6-win32-x64.zip)与[16.0.6的macOS镜像](https://npm.taobao.org/mirrors/electron/16.0.6/electron-v16.0.6-darwin-x64.zip))
   - 镜像下载完成后，找到项目`node_modules/electron/` 目录，将刚才下载好的electron离线安装包(electron-v16.0.6-win32-x64.zip)拷贝到`node_modules/electron/` 目录下，然后编辑install.js。 找到第38行(可能),改成如下。
@@ -33,8 +34,6 @@ MacOS 下的表现如图
     ```
   - 然后在当前项目的命令行中输入: `node node_modules/electron/install.js`。观察`node_modules/electron/`是否出现`dist`文件夹。如果有。那么就可以运行项目了。
   - npm run dev 本地运行
-  - npm run build_win / build_mac
-  - 编译须知： 1.在与项目目录同级的目录下新建一个`electron-zip`文件夹。2.将刚才下载的离线安装包放置在`electron-zip`文件夹下。3. npm run build_win / build_mac 4.编译的输出文件夹为`/release/mac` 或 `/release/win`。
 
 ### 最后
 软件的出发点并非在上班摸鱼，只是在针对性需求中寻找能学习到知识的点。待解决的地方：electron打包体积过大等，这些可以换成在浏览器插件中实现。在此仅作为一个记录的日志。

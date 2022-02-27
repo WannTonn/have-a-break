@@ -5,9 +5,8 @@
   "main": "main.js",
   "scripts": {
     "dev": "electron .",
-    "build_win": "electron-packager ./ have-a-break --platform=win32 --arch=x64 --out ./release/win --electron-zip-dir=../electron-zip --icon=./src/assets/icon/icon.ico --overwrite ",
-    "build_mac": "electron-packager ./ have-a-break --platform=darwin --arch=x64 --out ./release/mac --electron-zip-dir=../electron-zip --icon=./src/assets/icon/app.icns --overwrite",
-    "build_mac_arm": "electron-packager ./ have-a-break --platform=darwin --arch=arm64 --out ./release/mac_arm --electron-zip-dir=../electron-zip --icon=./src/assets/icon/app.icns --overwrite"
+    "build_win": "electron-builder -w",
+    "build_mac": "electron-builder -m"
   },
   "repository": {
     "type": "git",
@@ -18,25 +17,20 @@
   "bugs": {
     "url": "https://github.com/WannTonn/have-a-break/issues"
   },
-  "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ]
-  },
-  "dependencies": {
-    "electron-builder": "^22.14.5"
-  },
   "devDependencies": {
     "electron": "^16.0.5",
-    "electron-packager": "^15.4.0"
+    "electron-builder": "^22.14.13"
   },
   "build": {
     "productName": "摸鱼APP",
+    "files": [
+      "**/*",
+      "!release/**/*",
+      "!dist/**/*",
+      "!node_modules/**/*"
+    ],
     "win": {
-      "icon": "assets/icon/icon.ico",
+      "icon": "public/icon/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -49,8 +43,11 @@
     "mac": {
       "type": "development",
       "target": [
-        "mas-dev"
+        "default"
       ]
+    },
+    "dmg": {
+      "iconSize": 100
     }
   }
 }
