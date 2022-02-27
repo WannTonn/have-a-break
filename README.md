@@ -9,8 +9,7 @@ win10下的表现如图
 MacOS 下的表现如图
 ![](https://github.com/WannTonn/have-a-break/blob/master/src/assets/images/mac.jpg?raw=true)
 
-### 为什么没有release包
-- 因为打包出来的体积太大了，挂在GitHub下载也要下很久很久很久。摸鱼er们就自行打个包吧。:)
+
 ### 项目安装与打包可以避坑的点
 - npm install 的过程中，可能会遇到electron下载很慢的问题，解决方法如下
   - 打开[electron的国内镜像](https://npm.taobao.org/mirrors/electron/),找到你需要下载的版本(这里我用到了16.0.6，那就找到[16.0.6的windows镜像](https://npm.taobao.org/mirrors/electron/16.0.6/electron-v16.0.6-win32-x64.zip)与[16.0.6的macOS镜像](https://npm.taobao.org/mirrors/electron/16.0.6/electron-v16.0.6-darwin-x64.zip))
