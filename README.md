@@ -34,6 +34,14 @@ MacOS 下的表现如图
     ```
   - 然后在当前项目的命令行中输入: `node node_modules/electron/install.js`。观察`node_modules/electron/`是否出现`dist`文件夹。如果有。那么就可以运行项目了。
   - npm run dev 本地运行
-
+### 摸鱼插件的安装与运行
+- 下载`have-a-break.crx`
+- 将后缀名 `.crx` 改成 `.zip`
+- 解压到任意文件夹下， 比如 `have-a-break/`
+- 打开Chrome浏览器，URL栏输入`chrome://extensions/`,回车即跳转到扩展程序页面，勾选右上角的`开发者模式`
+- 点击`加载已解压的扩展程序`,选择 `have-a-break` 文件夹
+- 点击 icon， 再点击 `开始摸鱼吧` 的按钮
+- 由于Chrome的限制，无法自行模拟点击，需要再点击一下黑色背景即可自行全屏
+- enjoy
 ### 最后
 软件的出发点并非在上班摸鱼，只是在针对性需求中寻找能学习到知识的点。待解决的地方：electron打包体积过大等，这些可以换成在浏览器插件中实现。在此仅作为一个记录的日志。
